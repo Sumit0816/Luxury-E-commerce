@@ -46,6 +46,80 @@ function Icon({ name, size = 20, fill = false }: { name: string; size?: number; 
   };
   return <svg {...common}>{paths[name]}</svg>;
 }
+function SocialIcon({ name, size = 26 }: { name: 'facebook' | 'instagram' | 'whatsapp'; size?: number }) {
+  if (name === 'facebook') {
+    return (
+      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true" className="social-svg">
+        <circle cx="16" cy="16" r="16" fill="#1877F2"/>
+        <path d="M21.5 16.3h-3.4v10.5h-4.6V16.3h-2.2v-3.8h2.2V9.8c0-3.1 1.9-4.8 4.7-4.8 1.3 0 2.5.1 2.8.1v3.3h-1.9c-1.5 0-1.8.7-1.8 1.8v2.3h3.7l-.5 3.8z" fill="#FFFFFF"/>
+      </svg>
+    );
+  }
+  if (name === 'instagram') {
+    return (
+      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true" className="social-svg">
+        <defs>
+          <radialGradient id="ig-grad-header" cx="30%" cy="107%" r="130%">
+            <stop offset="0%" stopColor="#fdf497" />
+            <stop offset="5%" stopColor="#fdf497" />
+            <stop offset="45%" stopColor="#fd5949" />
+            <stop offset="60%" stopColor="#d6249f" />
+            <stop offset="90%" stopColor="#285AEB" />
+          </radialGradient>
+        </defs>
+        <circle cx="16" cy="16" r="16" fill="url(#ig-grad-header)"/>
+        <rect x="8.5" y="8.5" width="15" height="15" rx="4.2" stroke="#FFFFFF" strokeWidth="1.8" fill="none"/>
+        <circle cx="16" cy="16" r="3.7" stroke="#FFFFFF" strokeWidth="1.8" fill="none"/>
+        <circle cx="19.9" cy="12.1" r="1.1" fill="#FFFFFF"/>
+      </svg>
+    );
+  }
+  if (name === 'whatsapp') {
+    return (
+      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true" className="social-svg">
+        <circle cx="16" cy="16" r="16" fill="#25D366"/>
+        <path d="M16 6.8a9.2 9.2 0 0 0-7.9 13.9L7 25l4.5-1.2A9.2 9.2 0 1 0 16 6.8zm5.4 13c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .2-3.1-.7-2.6-1.1-4.3-3.8-4.4-4-.1-.2-1.1-1.5-1.1-2.9 0-1.3.7-2 1-2.3.3-.3.6-.4.8-.4h.5c.2 0 .4 0 .6.4.2.6.8 1.9.9 2.1.1.2.1.3 0 .5-.1.2-.2.3-.3.5l-.5.5c-.1.2-.3.3-.1.6.2.4.9 1.6 2 2.5 1.3 1.2 2.4 1.6 2.8 1.8.3.1.6.1.8-.1.2-.3.9-1.1 1.1-1.4.2-.4.4-.3.7-.2.3.1 2 1 2.4 1.1.3.2.5.3.6.4.1.3.1 1.1-.2 1.6z" fill="#FFFFFF"/>
+      </svg>
+    );
+  }
+  return null;
+}
+function SocialLinks({ size = 28, className = '' }: { size?: number; className?: string }) {
+  return (
+    <div className={`header-social-group ${className}`} aria-label="Social media">
+      <a
+        href="https://facebook.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="social-pill-link is-facebook"
+        aria-label="Follow Pavika Sarees on Facebook"
+        title="Facebook"
+      >
+        <SocialIcon name="facebook" size={size} />
+      </a>
+      <a
+        href="https://instagram.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="social-pill-link is-instagram"
+        aria-label="Follow Pavika Sarees on Instagram"
+        title="Instagram"
+      >
+        <SocialIcon name="instagram" size={size} />
+      </a>
+      <a
+        href="https://wa.me/919876543210?text=Hello%20Pavika%20Sarees,%20I%20would%20like%20to%20inquire%20about%20your%20collection"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="social-pill-link is-whatsapp"
+        aria-label="Chat with Pavika Sarees on WhatsApp"
+        title="WhatsApp"
+      >
+        <SocialIcon name="whatsapp" size={size} />
+      </a>
+    </div>
+  );
+}
 function useStored<T>(key: string, initial: T) {
   const [value, setValue] = useState<T>(() => { try { const item = localStorage.getItem(key); return item ? JSON.parse(item) : initial; } catch { return initial; } });
   useEffect(() => { localStorage.setItem(key, JSON.stringify(value)); }, [key, value]);
@@ -81,7 +155,14 @@ export default function App() {
       <div className="header-main shell">
         <div className="header-left"><button className="icon-button mobile-only" aria-label="Open menu" onClick={() => setMenuOpen(true)}><Icon name="menu" size={24}/></button><button className="search-trigger desktop-only" onClick={() => setSearchOpen(true)}><Icon name="search" size={19}/><span>Search</span></button></div>
         <button className="brand" aria-label="Pavika Sarees home" onClick={() => navigate('/')}><img src="/brand/pavika-sarees-logo.png" alt="Pavika Sarees official logo" /></button>
-        <div className="header-actions"><button className="icon-button mobile-only" aria-label="Search" onClick={() => setSearchOpen(true)}><Icon name="search" size={22}/></button><button className="icon-button desktop-only" aria-label="Account" onClick={() => navigate('/account')}><Icon name="user" size={22}/></button><button className="icon-button desktop-only with-count" aria-label={`Wishlist, ${wishlist.length} items`} onClick={() => navigate('/wishlist')}><Icon name="heart" size={22}/>{wishlist.length > 0 && <b>{wishlist.length}</b>}</button><button className="icon-button with-count" aria-label={`Shopping bag, ${count} items`} onClick={() => setCartOpen(true)}><Icon name="bag" size={23}/>{count > 0 && <b>{count}</b>}</button></div>
+        <div className="header-actions">
+          <button className="icon-button mobile-only" aria-label="Search" onClick={() => setSearchOpen(true)}><Icon name="search" size={22}/></button>
+          <button className="icon-button desktop-only" aria-label="Account" onClick={() => navigate('/account')}><Icon name="user" size={22}/></button>
+          <button className="icon-button desktop-only with-count" aria-label={`Wishlist, ${wishlist.length} items`} onClick={() => navigate('/wishlist')}><Icon name="heart" size={22}/>{wishlist.length > 0 && <b>{wishlist.length}</b>}</button>
+          <button className="icon-button with-count" aria-label={`Shopping bag, ${count} items`} onClick={() => setCartOpen(true)}><Icon name="bag" size={23}/>{count > 0 && <b>{count}</b>}</button>
+          <span className="header-action-divider" aria-hidden="true" />
+          <SocialLinks size={26} />
+        </div>
       </div>
       <nav className="desktop-nav" aria-label="Main navigation"><div className="nav-inner shell">
         {[['NEW ARRIVALS', '/collections/new-arrivals'], ['SHOP ALL SAREES', '/collections/all'], ['SHOP BY FABRIC', 'fabric'], ['SHOP BY OCCASION', 'occasion'], ['SHOP BY WEAVE', 'weave'], ['BEST SELLERS', '/collections/best-sellers'], ['FESTIVE EDIT', '/collections/festive'], ['OUR STORY', '/pages/our-story']].map(([label, to]) =>
@@ -91,7 +172,7 @@ export default function App() {
     </header>
     <main>{path === '/' ? <Home {...shared}/> : path.startsWith('/collections/') ? <Collection key={path} slug={path.split('/')[2]} {...shared}/> : path.startsWith('/products/') ? <ProductPage key={path} product={products.find(p => p.id === path.split('/')[2]) || products[0]} {...shared}/> : path === '/wishlist' ? <Wishlist {...shared}/> : path === '/checkout' ? <Checkout cart={cart} subtotal={subtotal} navigate={navigate}/> : path === '/account' ? <Account navigate={navigate}/> : <InfoPage path={path} navigate={navigate}/>}</main>
     <Footer navigate={navigate}/>
-    {menuOpen && <div className="overlay-layer" role="presentation" onMouseDown={() => setMenuOpen(false)}><aside className="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation" onMouseDown={e => e.stopPropagation()}><div className="drawer-head"><button className="brand brand-mobile-menu" aria-label="Pavika Sarees home" onClick={() => navigate('/')}><img src="/brand/pavika-sarees-logo.png" alt="Pavika Sarees official logo" /></button><button className="icon-button" aria-label="Close menu" onClick={() => setMenuOpen(false)}><Icon name="close"/></button></div><div className="mobile-menu-content"><span className="eyebrow">THE WORLD OF PAVIKA</span>{[['New Arrivals','new-arrivals'],['Shop All Sarees','all'],['Silk Sarees','silk'],['Banarasi Sarees','banarasi'],['Organza Sarees','organza'],['Wedding Collection','wedding'],['Festive Edit','festive'],['Best Sellers','best-sellers']].map(([text, slug]) => <button key={slug} onClick={() => navigate(`/collections/${slug}`)}>{text}<Icon name="chevron" size={17}/></button>)}<button onClick={() => navigate('/wishlist')}>Wishlist <Icon name="chevron" size={17}/></button><button onClick={() => navigate('/account')}>My Account <Icon name="chevron" size={17}/></button><button onClick={() => navigate('/pages/our-story')}>Our Story <Icon name="chevron" size={17}/></button></div><div className="mobile-menu-bottom">Timeless drapes. Beautiful moments.</div></aside></div>}
+    {menuOpen && <div className="overlay-layer" role="presentation" onMouseDown={() => setMenuOpen(false)}><aside className="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation" onMouseDown={e => e.stopPropagation()}><div className="drawer-head"><button className="brand brand-mobile-menu" aria-label="Pavika Sarees home" onClick={() => navigate('/')}><img src="/brand/pavika-sarees-logo.png" alt="Pavika Sarees official logo" /></button><button className="icon-button" aria-label="Close menu" onClick={() => setMenuOpen(false)}><Icon name="close"/></button></div><div className="mobile-menu-content"><span className="eyebrow">THE WORLD OF PAVIKA</span>{[['New Arrivals','new-arrivals'],['Shop All Sarees','all'],['Silk Sarees','silk'],['Banarasi Sarees','banarasi'],['Organza Sarees','organza'],['Wedding Collection','wedding'],['Festive Edit','festive'],['Best Sellers','best-sellers']].map(([text, slug]) => <button key={slug} onClick={() => navigate(`/collections/${slug}`)}>{text}<Icon name="chevron" size={17}/></button>)}<button onClick={() => navigate('/wishlist')}>Wishlist <Icon name="chevron" size={17}/></button><button onClick={() => navigate('/account')}>My Account <Icon name="chevron" size={17}/></button><button onClick={() => navigate('/pages/our-story')}>Our Story <Icon name="chevron" size={17}/></button></div><div className="mobile-menu-socials"><span className="eyebrow">CONNECT WITH US</span><SocialLinks size={28} /></div><div className="mobile-menu-bottom">Timeless drapes. Beautiful moments.</div></aside></div>}
     {searchOpen && <SearchOverlay navigate={navigate} close={() => setSearchOpen(false)}/>}
     {cartOpen && <div className="overlay-layer" onMouseDown={() => setCartOpen(false)}><aside className="cart-drawer" role="dialog" aria-modal="true" aria-label="Shopping bag" onMouseDown={e => e.stopPropagation()}><div className="drawer-head"><div><span className="eyebrow">YOUR SELECTION</span><h2>Your bag <span>({count})</span></h2></div><button className="icon-button" aria-label="Close bag" onClick={() => setCartOpen(false)}><Icon name="close"/></button></div>{cart.length ? <><div className="cart-items">{cart.map(item => { const p = products.find(x => x.id === item.id)!; return <div className="cart-item" key={item.id}><button className="cart-image" onClick={() => navigate(`/products/${p.id}`)}><img src={p.image} alt={p.name}/></button><div className="cart-item-info"><button className="cart-item-name" onClick={() => navigate(`/products/${p.id}`)}>{p.name}</button><span>{p.fabric}</span><strong>{money(p.price)}</strong><div className="cart-item-controls"><Quantity value={item.quantity} change={v => changeQuantity(item.id, v)}/><button className="remove" aria-label={`Remove ${p.name}`} onClick={() => changeQuantity(item.id, 0)}><Icon name="trash" size={16}/></button></div></div></div>; })}</div><div className="cart-footer"><div className="subtotal"><span>Subtotal</span><strong>{money(subtotal)}</strong></div><p>Shipping and taxes are calculated at checkout.</p><button className="button button-dark full" onClick={() => navigate('/checkout')}>CONTINUE TO CHECKOUT <Icon name="arrow" size={17}/></button><button className="text-link centered" onClick={() => setCartOpen(false)}>Continue shopping</button></div></> : <div className="empty-bag"><Icon name="bag" size={54}/><h3>Your bag is waiting.</h3><p>Beautiful things are just around the corner.</p><button className="button button-dark" onClick={() => navigate('/collections/all')}>EXPLORE SAREES <Icon name="arrow" size={16}/></button></div>}</aside></div>}
     <div className="toast" role="status" aria-live="polite">{toast && <><Icon name="check" size={17}/>{toast}</>}</div>
@@ -162,4 +243,4 @@ const infoContent: Record<string,{title:string; eyebrow:string; body:string}> = 
 };
 function InfoPage({ path, navigate }: { path: string; navigate: (path: string) => void }) { const slug = path.split('/').pop() || ''; const page = infoContent[slug]; if (!page) return <div className="simple-page shell"><div className="empty-state"><span className="eyebrow">404 / PAGE NOT FOUND</span><h1>We lost the thread.</h1><p>Let's find you something beautiful instead.</p><button className="button button-dark" onClick={() => navigate('/')}>BACK TO HOME <Icon name="arrow" size={17}/></button></div></div>; return <div className="info-page shell"><Breadcrumb parts={[page.title]} navigate={navigate}/><div><span className="eyebrow">{page.eyebrow}</span><h1>{page.title}</h1><p>{page.body}</p><button className="text-link line-link" onClick={() => navigate('/collections/all')}>EXPLORE THE COLLECTION <Icon name="arrow" size={17}/></button></div></div>; }
 function Newsletter() { const [email,setEmail] = useState(''); const [message,setMessage] = useState(''); const [loading,setLoading] = useState(false); const submit = (e: FormEvent) => { e.preventDefault(); setLoading(true); setTimeout(() => { setLoading(false); setMessage('Thanks for your interest. Subscription will be available when the mailing list is connected.'); }, 450); }; return <section className="newsletter"><div className="newsletter-inner shell"><div><span className="eyebrow">A NOTE FROM PAVIKA</span><h2>A little elegance<br/>in your inbox.</h2><p>New collections, styling inspiration, and beautiful things to come.</p></div><form onSubmit={submit}><label htmlFor="newsletter-email">Your email address</label><div><input id="newsletter-email" type="email" required placeholder="Enter your email address" value={email} onChange={e => { setEmail(e.target.value); setMessage(''); }}/><button type="submit" disabled={loading}>{loading ? 'PLEASE WAIT' : 'SUBSCRIBE'} <Icon name="arrow" size={17}/></button></div><small>By subscribing, you agree to receive updates from Pavika Sarees. Unsubscribe anytime. Prototype only; no email is stored.</small>{message && <p role="status" className="newsletter-message">{message}</p>}</form></div></section>; }
-function Footer({ navigate }: { navigate: (path: string) => void }) { const groups = [ {title:'SHOP', links:[['All Sarees','/collections/all'],['New Arrivals','/collections/new-arrivals'],['Best Sellers','/collections/best-sellers'],['Silk Sarees','/collections/silk'],['Wedding Collection','/collections/wedding'],['Festive Collection','/collections/festive']]}, {title:'CUSTOMER CARE',links:[['Contact Us','/pages/contact-us'],['Track Order','/pages/track-order'],['Shipping Policy','/pages/shipping-policy'],['Returns & Refunds','/pages/returns-refunds'],['FAQs','/pages/faqs'],['Size & Blouse Guide','/pages/size-blouse-guide']]}, {title:'ABOUT PAVIKA',links:[['Our Story','/pages/our-story'],['Our Collections','/collections/all'],['Privacy Policy','/pages/privacy-policy'],['Terms & Conditions','/pages/terms-conditions']]} ]; return <footer className="footer"><div className="shell"><div className="footer-top"><div className="footer-brand"><button className="brand brand-footer" aria-label="Pavika Sarees home" onClick={() => navigate('/')}><img src="/brand/pavika-sarees-logo.png" alt="Pavika Sarees official logo" loading="lazy" /></button><p>A celebration of grace,<br/>woven into every moment.</p></div>{groups.map(g => <div className="footer-column" key={g.title}><h3>{g.title}</h3>{g.links.map(([name,path]) => <button key={name} onClick={() => navigate(path)}>{name}</button>)}</div>)}<div className="footer-column"><h3>CONNECT</h3><p>Social channels and contact information will be added when official accounts are confirmed.</p></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} PAVIKA SAREES. ALL RIGHTS RESERVED.</span><span>MADE FOR EVERY BEAUTIFUL MOMENT</span></div></div></footer>; }
+function Footer({ navigate }: { navigate: (path: string) => void }) { const groups = [ {title:'SHOP', links:[['All Sarees','/collections/all'],['New Arrivals','/collections/new-arrivals'],['Best Sellers','/collections/best-sellers'],['Silk Sarees','/collections/silk'],['Wedding Collection','/collections/wedding'],['Festive Collection','/collections/festive']]}, {title:'CUSTOMER CARE',links:[['Contact Us','/pages/contact-us'],['Track Order','/pages/track-order'],['Shipping Policy','/pages/shipping-policy'],['Returns & Refunds','/pages/returns-refunds'],['FAQs','/pages/faqs'],['Size & Blouse Guide','/pages/size-blouse-guide']]}, {title:'ABOUT PAVIKA',links:[['Our Story','/pages/our-story'],['Our Collections','/collections/all'],['Privacy Policy','/pages/privacy-policy'],['Terms & Conditions','/pages/terms-conditions']]} ]; return <footer className="footer"><div className="shell"><div className="footer-top"><div className="footer-brand"><button className="brand brand-footer" aria-label="Pavika Sarees home" onClick={() => navigate('/')}><img src="/brand/pavika-sarees-logo.png" alt="Pavika Sarees official logo" loading="lazy" /></button><p>A celebration of grace,<br/>woven into every moment.</p></div>{groups.map(g => <div className="footer-column" key={g.title}><h3>{g.title}</h3>{g.links.map(([name,path]) => <button key={name} onClick={() => navigate(path)}>{name}</button>)}</div>)}<div className="footer-column"><h3>CONNECT</h3><p>Follow our journey or chat with our styling concierge.</p><SocialLinks size={26} className="footer-socials" /></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} PAVIKA SAREES. ALL RIGHTS RESERVED.</span><span>MADE FOR EVERY BEAUTIFUL MOMENT</span></div></div></footer>; }
