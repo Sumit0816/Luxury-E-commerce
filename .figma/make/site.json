@@ -1,0 +1,10 @@
+{
+  "description": "Explore a premium collection of Indian sarees with a luxurious e-commerce experience, designed for effortless shopping and cultural elegance.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
